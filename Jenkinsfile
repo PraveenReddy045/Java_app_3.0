@@ -3,6 +3,7 @@
 pipeline{
 
     agent any
+    //agent { label 'Demo' }
 
     parameters{
 
@@ -72,20 +73,6 @@ pipeline{
                }
             }
         }
-        stage('Deploying jar to Jfrog Artifactory') {
-         when { expression {  params.action == 'create' } }
-            steps{
-               script{
-
-                    def server = Artifactory.server '<artifactory id>'
-                    def uploadSpec = """{
-                    "files": [{
-                    "pattern": "/home/ubuntu/Java_app_3.0/target/kubernetes-configmap-reload-0.0.1-SNAPSHOT.jar",
-                    "target": "http://<IP>/artifactory/"
-                 }]
-              }"""
-              server.upload(uploadSpec) 
-          }
         stage('Docker Image Build'){
          when { expression {  params.action == 'create' } }
             steps{
